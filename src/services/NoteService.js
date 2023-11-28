@@ -29,6 +29,18 @@ class NoteService {
     }
   }
 
+  async getNoteById(id) {
+    try {
+      const note = await prisma.note.findUnique({ where: { id } });
+
+      if (!note) throw new APIError(404, "Note not found");
+
+      return note;
+    } catch (error) {
+      throw APIError.handleError(error);
+    }
+  }
+
   async updateNote(id, data) {
     try {
       const validatedData = validate(data, noteSchema);

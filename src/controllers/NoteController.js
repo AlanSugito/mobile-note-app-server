@@ -29,6 +29,17 @@ class NoteController {
     }
   }
 
+  async getNoteById(req, res, next) {
+    try {
+      const { noteid } = req.params;
+      const note = await NoteService.getNoteById(noteid);
+
+      res.status(200).json({ message: "Successfully get note", data: note });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async updateNote(req, res, next) {
     try {
       const { noteid } = req.params;
