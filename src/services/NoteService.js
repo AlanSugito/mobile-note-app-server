@@ -21,6 +21,7 @@ class NoteService {
     try {
       const notes = await prisma.note.findMany({
         where: { user_id: userId, isActive: true },
+        orderBy: { created_at: "desc" },
       });
 
       return notes;
@@ -44,9 +45,10 @@ class NoteService {
   async updateNote(id, data) {
     try {
       const validatedData = validate(data, noteSchema);
+
       const result = await prisma.note.update({
         where: { id },
-        data: validatedData,
+        data: { ...validatedData, updated_at: new Date() },
         select: { title: true, content: true },
       });
 
